@@ -20,10 +20,22 @@ package com.nimbusds.jose.crypto;
 
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import junit.framework.TestCase;
 
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.bc.BouncyCastleProviderSingleton;
-import junit.framework.TestCase;
+import com.nimbusds.jose.util.Base64URL;
+import com.nimbusds.jose.util.JSONObjectUtils;
+import com.nimbusds.jose.util.StandardCharset;
+import net.minidev.json.JSONObject;
 
 
 /**
@@ -122,6 +134,8 @@ public class PBES2Test extends TestCase {
 
 		assertEquals(8, PasswordBasedEncrypter.MIN_SALT_LENGTH);
 		assertEquals(1000, PasswordBasedEncrypter.MIN_RECOMMENDED_ITERATION_COUNT);
+
+		assertEquals(1_000_000, PasswordBasedDecrypter.MAX_ALLOWED_ITERATION_COUNT);
 	}
 
 
@@ -235,5 +249,40 @@ public class PBES2Test extends TestCase {
 		String expectedPlainText = "{\"keys\":[{\"kty\":\"oct\",\"kid\":\"77c7e2b8-6e13-45cf-8672-617b5b45243a\",\"use\":\"enc\",\"alg\":\"A128GCM\",\"k\":\"XctOhJAkA-pD9Lh7ZgW_2A\"},{\"kty\":\"oct\",\"kid\":\"81b20965-8332-43d9-a468-82160ad91ac8\",\"use\":\"enc\",\"alg\":\"A128KW\",\"k\":\"GZy6sIZ6wl9NJOKB-jnmVQ\"},{\"kty\":\"oct\",\"kid\":\"18ec08e1-bfa9-4d95-b205-2b4dd1d4321d\",\"use\":\"enc\",\"alg\":\"A256GCMKW\",\"k\":\"qC57l_uxcm7Nm3K-ct4GFjx8tM1U8CZ0NLBvdQstiS8\"}]}";
 
 		assertEquals(expectedPlainText, jweObject.getPayload().toString());
+	}
+	
+	
+	public void testPBES2_rejectZero_p2c()
+		throws Exception {
+		
+		final String password = "secret";
+		final String plaintext = "Hello world!";
+		
+		JWEObject jweObject = new JWEObject(new JWEHeader.Builder(JWEAlgorithm.PBES2_HS256_A128KW, EncryptionMethod.A128GCM).build(), new Payload(plaintext));
+		
+		PasswordBasedEncrypter encrypter = new PasswordBasedEncrypter(password, 16, 8192);
+		encrypter.getJCAContext().setContentEncryptionProvider(BouncyCastleProviderSingleton.getInstance());
+		jweObject.encrypt(encrypter);
+		String jwe = jweObject.serialize();
+		
+		// Modify header
+		JSONObject modifiedHeaderJSONObject = new JSONObject();
+		modifiedHeaderJSONObject.putAll(jweObject.getHeader().toJSONObject());
+		modifiedHeaderJSONObject.put(HeaderParameterNames.PBES2_COUNT, 0);
+		Base64URL modifiedHeader = Base64URL.encode(modifiedHeaderJSONObject.toJSONString());
+		
+		jwe = jwe.substring(jwe.indexOf('.'));
+		jwe = modifiedHeader + jwe;
+		
+		jweObject = JWEObject.parse(jwe);
+		
+		PasswordBasedDecrypter decrypter = new PasswordBasedDecrypter(password);
+		decrypter.getJCAContext().setContentEncryptionProvider(BouncyCastleProviderSingleton.getInstance());
+		try {
+			jweObject.decrypt(decrypter);
+			fail();
+		} catch (JOSEException e) {
+			assertEquals("Missing JWE \"p2c\" header parameter", e.getMessage());
+		}
 	}
 }
