@@ -3,9 +3,9 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.nimbusds</groupId>
+    <groupId>org.wso2.com.nimbusds</groupId>
     <artifactId>nimbus-jose-jwt</artifactId>
-    <version>8.23</version>
+    <version>8.24-wso2v1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Nimbus JOSE+JWT</name>
@@ -13,7 +13,7 @@
         Java library for Javascript Object Signing and Encryption (JOSE) and
         JSON Web Tokens (JWT)
     </description>
-    <url>https://bitbucket.org/connect2id/nimbus-jose-jwt</url>
+    <url>https://github.com/wso2/wso2-nimbus-jose-jwt</url>
 
     <organization>
         <name>Connect2id Ltd.</name>
@@ -29,10 +29,10 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:https://bitbucket.org/connect2id/nimbus-jose-jwt.git</connection>
-        <developerConnection> scm:git:git@bitbucket.org:connect2id/nimbus-jose-jwt.git</developerConnection>
-        <url>https://bitbucket.org/connect2id/nimbus-jose-jwt</url>
-        <tag>8.23</tag>
+        <connection>scm:https://github.com/wso2/wso2-nimbus-jose-jwt.git</connection>
+        <developerConnection> scm:git:https://github.com/wso2/wso2-nimbus-jose-jwt.git</developerConnection>
+        <url>https://github.com/wso2/wso2-nimbus-jose-jwt</url>
+        <tag>HEAD</tag>
     </scm>
 
     <developers>
@@ -227,6 +227,7 @@
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.5.3</version>
                 <configuration>
+                    <preparationGoals>clean install</preparationGoals>
                     <useReleaseProfile>false</useReleaseProfile>
                     <goals>deploy</goals>
                 </configuration>
