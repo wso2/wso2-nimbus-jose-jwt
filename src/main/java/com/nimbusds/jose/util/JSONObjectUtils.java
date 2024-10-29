@@ -446,6 +446,17 @@ public class JSONObjectUtils {
 		return new Base64URL(value);
 	}
 
+	/**
+	 * Serialises the specified string to a JSON string.
+	 *
+	 * @param string The string. Must not be {@code null}.
+	 *
+	 * @return The string as JSON string.
+	 */
+	public static String toJSONString(final String string) {
+		
+		return "\"" + JSONObject.escape(string) + "\"";
+	}
 
 	/**
 	 * Prevents public instantiation.

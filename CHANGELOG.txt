@@ -1217,3 +1217,9 @@ version 8.22.1 (2021-07-01)
 
 version 8.23 (2021-09-23)
     * Adds RSA-OAEP-512 support to RSAEncrypter and RSADecrypter.
+
+version 8.24-wso2v1 (2024-10-29)
+    * The PasswordBasedDecrypter (PBKDF2) must enforce a limit on the maximum
+      allowed JWE "p2c" header value to prevent DoS attacks. This limit is now
+      set to 1 million, taking into account that OWASP recommends 600 thousand
+      iterations for PBKDF2-HMAC-SHA256 (iss 526).

@@ -62,3 +62,9 @@ version 9.10 (2021-06-05)
       header parameter (iss #424).
     * Prevents StackOverflowError when parsing a JOSE header with a very large
       number of nested JOSE objects (iss #425).
+
+version 8.24-wso2v1 (2024-10-29)
+    * The PasswordBasedDecrypter (PBKDF2) must enforce a limit on the maximum
+      allowed JWE "p2c" header value to prevent DoS attacks. This limit is now
+      set to 1 million, taking into account that OWASP recommends 600 thousand
+      iterations for PBKDF2-HMAC-SHA256 (iss 526).
