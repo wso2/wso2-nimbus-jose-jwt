@@ -1,3 +1,8 @@
+# wso2-nimbus-jose-jwt
+Java library for Javascript Object Signing and Encryption (JOSE) and JSON Web Tokens (JWT)
+
+This is a fork from connect2id/nimbus-jose-jwt from tag 8.23
+
 # Nimbus JOSE + JWT
 
 * The most popular and robust Java library for JSON Web Tokens (JWT)
