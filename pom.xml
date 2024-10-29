@@ -228,8 +228,6 @@
                 <version>2.5.3</version>
                 <configuration>
                     <preparationGoals>clean install</preparationGoals>
-                    <useReleaseProfile>false</useReleaseProfile>
-                    <goals>deploy</goals>
                 </configuration>
             </plugin>
             <plugin>
