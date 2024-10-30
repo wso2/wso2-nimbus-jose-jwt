@@ -194,28 +194,25 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.10.3</version>
-                <configuration>
-                    <author>true</author>
-                    <version>true</version>
-                    <use>true</use>
-                    <linksource>true</linksource>
-                    <windowtitle>Nimbus JOSE + JWT v${project.version}
-                    </windowtitle>
-                    <doctitle>Nimbus JOSE + JWT v${project.version}</doctitle>
-                    <overview>${basedir}/src/main/javadoc/overview.html
-                    </overview>
-                </configuration>
+                <version>3.4.1</version>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
                         <goals>
                             <goal>jar</goal>
                         </goals>
+                        <configuration>
+                            <!--This parameter disables doclint-->
+                            <doclint>none</doclint>
+                        </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <source>1.8</source>
+                    <attach>true</attach>
+                    <additionalJOption>-Xdoclint:none</additionalJOption>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
