@@ -5,7 +5,7 @@
 
     <groupId>org.wso2.com.nimbusds</groupId>
     <artifactId>nimbus-jose-jwt</artifactId>
-    <version>8.23-wso2v1</version>
+    <version>8.23-wso2v2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Nimbus JOSE+JWT</name>
@@ -32,7 +32,7 @@
         <connection>scm:https://github.com/wso2/wso2-nimbus-jose-jwt.git</connection>
         <developerConnection> scm:git:https://github.com/wso2/wso2-nimbus-jose-jwt.git</developerConnection>
         <url>https://github.com/wso2/wso2-nimbus-jose-jwt</url>
-        <tag>v8.23-wso2v1</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <developers>
